@@ -15,6 +15,7 @@ def func(a, b, c):
     """        
     try:
         print("hello world")
+        print("somethng else")
     except Exception:
         print("oh something went wrong")
         
