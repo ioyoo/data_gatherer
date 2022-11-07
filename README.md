@@ -1,2 +1,2 @@
 # ioyoo
-Stock analyzer from social meda
+Stock analyzer from social media
