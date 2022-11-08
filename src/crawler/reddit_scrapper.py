@@ -1,4 +1,4 @@
-from .private.credentials import CLIENT_AUTH2, SECRET, USER_AGENT
+from private.credentials import CLIENT_AUTH2, SECRET, USER_AGENT
 import praw
 
 
