@@ -1,9 +1,6 @@
-from ..reddit_scrapper import func
+from ..reddit_scrapper import RedditCrawler
 
 
-def test_func():
-    assert func(1, 1, 1) == -1
-
-
-def test_not_func():
-    assert func(2, 2, 2) != 2
+def test_redditCrawler():
+    redditCrawler = RedditCrawler("test", "test", "test")
+    assert redditCrawler is not None
