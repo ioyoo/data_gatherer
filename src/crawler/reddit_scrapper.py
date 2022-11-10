@@ -3,8 +3,10 @@ import praw
 
 
 class RedditCrawler:
-    def __init__(self, client_id=CLIENT_AUTH2, client_secret=SECRET,
-                 user_agent=USER_AGENT) -> None:
+    def __init__(
+        self, client_id=CLIENT_AUTH2, client_secret=SECRET,
+        user_agent=USER_AGENT
+    ) -> None:
         self.reddit = praw.Reddit(
             client_id=client_id,
             client_secret=client_secret,
@@ -13,8 +15,8 @@ class RedditCrawler:
 
     def get_info_from(self, subreddit="wallstreetbets"):
         sub = self.reddit.subreddit(subreddit)
-        for submission in sub.hot(limit=10):
-            print(submission.title)
+        for submission in sub.new(limit=10):
+            print(vars(submission))
 
 
 reddit = RedditCrawler()

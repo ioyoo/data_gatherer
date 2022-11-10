@@ -2,3 +2,5 @@
 src/__pycache__/
 src/test/__pycache__/
 private
+src/crawler/test/__pycache__
+src/crawler/__pycache__
