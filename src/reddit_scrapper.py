@@ -1,4 +1,4 @@
-from tools.text_tools import find_in_text
+from .tools.text_tools import find_in_text
 import praw
 
 
