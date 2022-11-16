@@ -1,13 +1,15 @@
 from .reddit_scrapper import RedditCrawler
-#from .private.credentials import CLIENT_AUTH2, SECRET, USER_AGENT
+from .data.data import RedditCredentials, RedditData
 import time
 
 
 def main():
-    # reddit = RedditCrawler(CLIENT_AUTH2, SECRET, USER_AGENT)
+    cred = RedditCredentials()
+    rd = RedditData()
+    reddit = RedditCrawler(cred.CLIENT_AUTH2, cred.SECRET, cred.USER_AGENT)
     start_time = time.time()
-    # reddit.get_info_from(
-    #     stock_names=["TSLA", "tesla", "short", "HBO"], limit=20, )
+    reddit.get_info_from(
+        stock_names=rd.KEYWORDS, subreddits=rd.CHANNELS, limit=20)
     print("--- %s seconds ---" % (time.time() - start_time))
 
 
