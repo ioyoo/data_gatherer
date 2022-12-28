@@ -8,3 +8,4 @@ src/tools/__pycache__/
 tests/__pycache__/
 __pycache__/
 src/private/
+src/data/__pycache__
