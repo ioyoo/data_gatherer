@@ -22,7 +22,7 @@ class RedditCredentials:
     SECRET = ""
     CLIENT_AUTH2 = ""
     USER_AGENT = ""
-    CRED_PATH = 'src\private\credentials.yaml'
+    CRED_PATH = 'data_gatherer\src\private\credentials.yaml'
 
     def __init__(self, cred_path=CRED_PATH) -> None:
         self.CRED_PATH = cred_path
