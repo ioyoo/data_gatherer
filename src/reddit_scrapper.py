@@ -12,9 +12,7 @@ class RedditCrawler:
             client_secret=client_secret,
             user_agent=user_agent,
         )
-        self.dict = {
-
-        }
+        self.dict = {}
 
     def get_info_from(self,
                       stock_names=["GME", "gamestop"],
