@@ -12,7 +12,7 @@ class RedditCrawler:
             client_secret=client_secret,
             user_agent=user_agent,
         )
-        self.dict = {}
+        self.posts = {}
 
     def get_info_from(self,
                       stock_names=["GME", "gamestop"],
@@ -26,23 +26,37 @@ class RedditCrawler:
                         Defaults to ["wallstreetbets"].
             timeout (int, optional): _description_. Defaults to 5.
 
-        Returns: dict with data. (text, upvotes, downvotes, awards, category)
+        Returns: dict[<name>] = [<post = {text, upvotes, downvotes, awards, category}>, ... , ...]
         """
         for subreddit in subreddits:
             sub = self.reddit.subreddit(subreddit)
             for submission in sub.new(limit=limit):
-                text = submission.selftext
                 for word in stock_names:
-                    if find_in_text(word, text):
-                        self.dict[submission.id] = {
-                            'name': word,
-                            "text": submission.selftext,
-                            "upvotes": submission.ups,
-                            "downvotes": submission.downs,
-                            "awards": submission.total_awards_received,
-                            "category": submission.category
-                        }
-        return self.dict
+                    if find_in_text(word, submission.selftext):
+                        try:
+                            self.posts[word].append(
+                                self._create_posts_dict(submission))
+                        except KeyError:
+                            self.posts[word] = [
+                                self._create_posts_dict(submission)]
+        return self.posts
+
+    def _create_posts_dict(self, submission):
+        """ creates dictionary of given submission
+
+        Args:
+            submission (Submission): submission entry from reddit
+
+        Returns:
+            dict: post dictionary
+        """
+        return {
+            "text": submission.selftext,
+            "upvotes": submission.ups,
+            "downvotes": submission.downs,
+            "awards": submission.total_awards_received,
+            "category": submission.category
+        }
 
     def read_from_reddit(self,
                          stock_names=["GME", "gamestop"],
@@ -65,4 +79,4 @@ class RedditCrawler:
                         print(text + "\n")
 
     def get_data(self):
-        return self.dict
+        return self.posts

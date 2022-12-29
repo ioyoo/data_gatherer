@@ -12,7 +12,7 @@ def main():
     dict = reddit.get_info_from(
         stock_names=rd.KEYWORDS, subreddits=rd.CHANNELS, limit=20)
     redditAnalysis = RedditAnalysis()
-    redditAnalysis.run_analysis(dict=dict)
+    redditAnalysis.run_analysis(dict)
     print("--- %s seconds ---" % (time.time() - start_time))
     print("Well thats a wrap")
 

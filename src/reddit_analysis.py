@@ -6,43 +6,31 @@ class RedditAnalysis:
         self.results = {}
         self.stock_count = {}
         
-    def run_analysis(self, dict):
+    def run_analysis(self, posts: dict):
         analyzer = SentimentIntensityAnalyzer()
 
-        for sentence in dict:
-            self.sentiment_analyzer_scores(dict[sentence], analyzer)
-        
-        for key in dict.keys():
-            test = dict.get(key)
-            try:
-                self.stock_count[test['name']] = self.stock_count[test['name']] + 1
-            except KeyError:
-                self.stock_count[test['name']] = 1
-
-        for key, value in self.results.items():
-            value = value / self.stock_count.get(key)
-            self.results[key] = value
-
-        print(self.results)
+        for key, post_list in posts.items():
+            for post in post_list:
+                self.sentiment_analyzer_scores(key, post['text'], post['upvotes'], post['downvotes'], analyzer)
+            self.results[key] /= len(post_list)
+            
         return self.results
 
-    def sentiment_analyzer_scores(self, values, analyzer: SentimentIntensityAnalyzer):
-        score = analyzer.polarity_scores(values['text'])
+    def sentiment_analyzer_scores(self, key, text, upvotes, downvotes, analyzer: SentimentIntensityAnalyzer):
+        score = analyzer.polarity_scores(text)
         try:
-            self.results[values['name']] = self.results[values['name']] + self.get_comment_value(score, values)
-            #self.stock_count.append(values['name'])
+            self.results[key] = self.results[key] + self.get_comment_value(score, upvotes, downvotes)
         except KeyError:
-            self.results[values['name']] = self.get_comment_value(score, values)
-            #self.stock_count.append(values['name'])
+            self.results[key] = self.get_comment_value(score, upvotes, downvotes)
     
-    def get_comment_value(self, score, values):
+    def get_comment_value(self, score, upvotes, downvotes):
         score.popitem()
         max_value = max(score.values())
         max_key = max(score, key=score.get)
         match max_key:
             case 'neg':
-                return -max_value + (0.1 * values['upvotes']) - (0.1 * values['downvotes'])
+                return -max_value + (0.1 * upvotes) - (0.1 * downvotes)
             case 'neu':
-                return (0.5 * max_value) + (0.2 * values['upvotes']) - (0.2 * values['downvotes'])
+                return (0.5 * max_value) + (0.2 * upvotes) - (0.2 * downvotes)
             case 'pos':
-                return max_value + (0.1 * values['upvotes']) - (0.1 * values['downvotes'])
+                return max_value + (0.1 * upvotes) - (0.1 * downvotes)
