@@ -35,6 +35,7 @@ class RedditCrawler:
                 for word in stock_names:
                     if find_in_text(word, text):
                         self.dict[submission.id] = {
+                            'name': word,
                             "text": submission.selftext,
                             "upvotes": submission.ups,
                             "downvotes": submission.downs,
