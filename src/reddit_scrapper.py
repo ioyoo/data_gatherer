@@ -26,7 +26,7 @@ class RedditCrawler:
                         Defaults to ["wallstreetbets"].
             timeout (int, optional): _description_. Defaults to 5.
 
-        Returns: posts with data. (text, upvotes, downvotes, awards, category)
+        Returns: dict[<name>] = [<post = {text, upvotes, downvotes, awards, category}>, ... , ...]
         """
         for subreddit in subreddits:
             sub = self.reddit.subreddit(subreddit)
