@@ -4,7 +4,6 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 class RedditAnalysis:
     def __init__(self) -> None:
         self.results = {}
-        self.stock_count = {}
         
     def run_analysis(self, posts: dict):
         analyzer = SentimentIntensityAnalyzer()
