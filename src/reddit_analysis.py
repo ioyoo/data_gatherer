@@ -25,7 +25,7 @@ class RedditAnalysis:
     def get_comment_value(self, score, upvotes, downvotes):
         score.popitem()
         max_value = max(score.values())
-        max_key = max(score, key=score.get)
+        max_key = max(score, key=score.get())
         match max_key:
             case 'neg':
                 return -max_value + (0.1 * upvotes) - (0.1 * downvotes)
