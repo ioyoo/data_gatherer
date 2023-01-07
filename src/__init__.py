@@ -1,5 +1,6 @@
 from reddit_scrapper import RedditCrawler
 from data.data import RedditCredentials, RedditData
+from reddit_analysis import RedditAnalysis
 import time
 
 
@@ -10,6 +11,8 @@ def main():
     start_time = time.time()
     dict = reddit.get_info_from(
         stock_names=rd.KEYWORDS, subreddits=rd.CHANNELS, limit=20)
+    redditAnalysis = RedditAnalysis()
+    redditAnalysis.run_analysis(dict)
     print("--- %s seconds ---" % (time.time() - start_time))
     print("Well thats a wrap")
 
