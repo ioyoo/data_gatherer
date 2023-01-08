@@ -5,7 +5,7 @@ import requests
 
 class RedditData:
     CHANNELS = ["stockmarket", "wallstreetbets", "investing",
-                "dividends", "investing_discussion", "stocks"]
+                "dividends", "investing_discussion", "stocks", "wallstreetbetsnew"]
     KEYWORDS = ["TSLA", "APPL", "GOO", "HP", "tesla", "elon"]
 
     def __init__(self, channels=CHANNELS, keywords=KEYWORDS):

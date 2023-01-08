@@ -1,4 +1,5 @@
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from .tools.reddit_sentimental_words import REDDIT_WORDS
 
 
 class RedditAnalysis:
@@ -7,6 +8,7 @@ class RedditAnalysis:
 
     def run_analysis(self, posts: dict):
         analyzer = SentimentIntensityAnalyzer()
+        analyzer.lexicon.update(REDDIT_WORDS)
 
         for key, post_list in posts.items():
             for post in post_list:
