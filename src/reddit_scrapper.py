@@ -3,6 +3,8 @@ import praw
 
 
 class RedditCrawler:
+    TIME_FILTERS = ["all", "day", "hour", "month", "week", "year"]
+
     def __init__(
         self, client_id, client_secret,
         user_agent
@@ -17,20 +19,20 @@ class RedditCrawler:
     def get_info_from(self,
                       stock_names=["GME", "gamestop"],
                       subreddits=["wallstreetbets"],
-                      limit=5):
+                      filter="day"):
         """ Given stock names and subreddits, returns how many times it was mentioned, given a time lot
 
         Args:
-            stock_names (list, optional): _description_. Defaults to ["GME"].
-            subreddits (list, optional): _description_.
+            stock_names (list, optional): list with names to look for. Defaults to ["GME"].
+            subreddits (list, optional): list of subreddit names.
                         Defaults to ["wallstreetbets"].
-            timeout (int, optional): _description_. Defaults to 5.
+            timefilter (int, optional): Number of . Defaults to 5.
 
         Returns: dict[<name>] = [<post = {text, upvotes, downvotes, awards, category}>, ... , ...]
         """
         for subreddit in subreddits:
             sub = self.reddit.subreddit(subreddit)
-            for submission in sub.new(limit=limit):
+            for submission in sub.top(time_filter=filter):
                 for word in stock_names:
                     if find_in_text(word, submission.selftext):
                         try:
@@ -61,18 +63,20 @@ class RedditCrawler:
     def read_from_reddit(self,
                          stock_names=["GME", "gamestop"],
                          subreddits=["wallstreetbets"],
-                         limit=5):
-        """ Given stock names and subreddits, print in terminal the found messages
+                         filter="day"):
+        """ Given stock names and subreddits, returns how many times it was mentioned, given a time lot
 
         Args:
-            stock_names (list, optional): _description_. Defaults to ["GME"].
-            subreddits (list, optional): _description_.
+            stock_names (list, optional): list with names to look for. Defaults to ["GME"].
+            subreddits (list, optional): list of subreddit names.
                         Defaults to ["wallstreetbets"].
-            timeout (int, optional): _description_. Defaults to 5.
+            timefilter (int, optional): Number of . Defaults to 5.
+
+        Returns: dict[<name>] = [<post = {text, upvotes, downvotes, awards, category}>, ... , ...]
         """
         for subreddit in subreddits:
             sub = self.reddit.subreddit(subreddit)
-            for submission in sub.new(limit=limit):
+            for submission in sub.top(time_filter=filter):
                 text = submission.selftext
                 for word in stock_names:
                     if find_in_text(word, text):
