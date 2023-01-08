@@ -6,16 +6,23 @@ import time
 
 
 def main():
+
+    # Initialize Instances
     cred = RedditCredentials()
     rd = RedditData()
     api = APICredentials()
-    reddit = RedditCrawler(cred.CLIENT_AUTH2, cred.SECRET, cred.USER_AGENT)
-    start_time = time.time()
-    posts = reddit.get_info_from(
-        stock_names=rd.get_top100(), subreddits=rd.CHANNELS, limit=20)
     redditAnalysis = RedditAnalysis()
+    # start timer
+    start_time = time.time()
+    # get info
+    reddit = RedditCrawler(cred.CLIENT_AUTH2, cred.SECRET, cred.USER_AGENT)
+    posts = reddit.get_info_from(
+        stock_names=rd.get_top100(), subreddits=rd.CHANNELS, filter="day")
+    # run analysis
     results = redditAnalysis.run_analysis(posts)
+    # get time
     print("--- %s seconds ---" % (time.time() - start_time))
+    # post results
     agent = PostAgent(api.PATH)
     agent.post(results)
 
