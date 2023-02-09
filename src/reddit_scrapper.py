@@ -47,6 +47,9 @@ class RedditCrawler:
     def get_data(self):
         return self.posts
 
+    def get_data(self):
+        return self.posts
+
     def _create_posts_dict(self, submission):
         """ creates dictionary of given submission
 
