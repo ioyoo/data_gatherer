@@ -17,13 +17,13 @@ class RedditCrawler:
         self.posts = {}
 
     def get_info_from(self,
-                      stock_names=["GME", "gamestop"],
+                      stock_keywords: dict = {"GME": ["gamestop", "game"]},
                       subreddits=["wallstreetbets"],
                       filter="day"):
         """ Given stock names and subreddits, returns how many times it was mentioned, given a time lot
 
         Args:
-            stock_names (list, optional): list with names to look for. Defaults to ["GME"].
+            stock_keywords (dict, optional): key is ticker. values is list of words that can be used to reference that name
             subreddits (list, optional): list of subreddit names.
                         Defaults to ["wallstreetbets"].
             timefilter (int, optional): Number of . Defaults to 5.
@@ -33,14 +33,18 @@ class RedditCrawler:
         for subreddit in subreddits:
             sub = self.reddit.subreddit(subreddit)
             for submission in sub.top(time_filter=filter):
-                for word in stock_names:
-                    if find_in_text(word, submission.selftext):
-                        try:
-                            self.posts[word].append(
-                                self._create_posts_dict(submission))
-                        except KeyError:
-                            self.posts[word] = [
-                                self._create_posts_dict(submission)]
+                for ticker, words in stock_keywords.items():
+                    for word in words:
+                        if find_in_text(word, submission.selftext):
+                            try:
+                                self.posts[ticker].append(
+                                    self._create_posts_dict(submission))
+                            except KeyError:
+                                self.posts[ticker] = [
+                                    self._create_posts_dict(submission)]
+        return self.posts
+
+    def get_data(self):
         return self.posts
 
     def _create_posts_dict(self, submission):
@@ -59,28 +63,3 @@ class RedditCrawler:
             "awards": submission.total_awards_received,
             "category": submission.category
         }
-
-    def read_from_reddit(self,
-                         stock_names=["GME", "gamestop"],
-                         subreddits=["wallstreetbets"],
-                         filter="day"):
-        """ Given stock names and subreddits, returns how many times it was mentioned, given a time lot
-
-        Args:
-            stock_names (list, optional): list with names to look for. Defaults to ["GME"].
-            subreddits (list, optional): list of subreddit names.
-                        Defaults to ["wallstreetbets"].
-            timefilter (int, optional): Number of . Defaults to 5.
-
-        Returns: dict[<name>] = [<post = {text, upvotes, downvotes, awards, category}>, ... , ...]
-        """
-        for subreddit in subreddits:
-            sub = self.reddit.subreddit(subreddit)
-            for submission in sub.top(time_filter=filter):
-                text = submission.selftext
-                for word in stock_names:
-                    if find_in_text(word, text):
-                        print(text + "\n")
-
-    def get_data(self):
-        return self.posts

@@ -53,7 +53,8 @@ class RedditCredentials:
 class APICredentials:
     CRED_PATH = 'data_gatherer\src\private\credentials.yaml'
     PATH = ''
-
+    APLHA_VANTAGE = ''
+    
     def __init__(self, cred_path=CRED_PATH) -> None:
         self.CRED_PATH = cred_path
         cred_full_path = os.path.join(os.getcwd(), cred_path)
@@ -61,6 +62,7 @@ class APICredentials:
             try:
                 credentials = yaml.safe_load(credentials_raw)
                 self.PATH = credentials['API_PATH']
+                self.APLHA_VANTAGE = credentials['ALPHA_VANTAGE']
             except yaml.YAMLError as exc:
                 print(exc)
 
